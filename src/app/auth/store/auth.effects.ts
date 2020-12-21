@@ -1,10 +1,12 @@
 import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
 import { Actions, ofType } from "@ngrx/effects";
 import { of, pipe } from "rxjs";
 import { catchError, map, switchMap } from "rxjs/operators";
 import { AuthResponseData } from "../auth.service";
 import * as AuthActions from './auth.actions';
 
+@Injectable()
 export class AuthEffects {
     constructor(private actions$: Actions, private http: HttpClient){}
     authLogin = this.actions$.pipe(
