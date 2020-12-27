@@ -6,6 +6,7 @@ import { User } from './user.model';
 import * as fromApp from "../store/app.reducer";
 import { Store } from '@ngrx/store';
 import * as AuthAction from './store/auth.actions'
+import { Router } from '@angular/router';
 
 export interface AuthResponseData {
   kind: string;
@@ -24,7 +25,7 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpClient, private store: Store<fromApp.AppState>) {}
+  constructor(private http: HttpClient, private store: Store<fromApp.AppState>, private router: Router) {}
 
   signUp(email: string, password: string) {
     return this.http
@@ -65,7 +66,7 @@ export class AuthService {
         token: token,
         expirationDate: expirationDate
       })
-    )
+    );
     this.autoLogout(expiresIn * 1000);
     localStorage.setItem('userData', JSON.stringify(user));
   }
@@ -102,11 +103,9 @@ export class AuthService {
       case 'EMAIL_EXISTS':
         errorMessage = 'this email exists already';
         break;
-
       case 'EMAIL_NOT_FOUND':
         errorMessage = 'This Email does not exist';
         break;
-
       case 'INVALID_PASSWORD':
         errorMessage = 'Incorrect Password';
         break;
@@ -117,6 +116,7 @@ export class AuthService {
   logout() {
     // this.user.next(null);
     this.store.dispatch(new AuthAction.Logout());
+    this.router.navigate(['/auth']);
     localStorage.removeItem('userData');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);

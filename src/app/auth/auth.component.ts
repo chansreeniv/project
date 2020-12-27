@@ -37,13 +37,16 @@ export class AuthComponent implements OnInit, OnDestroy {
     private store: Store<fromApp.AppState>
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.store.select('auth').subscribe(
       authState => {
         this.isLoading = authState.loading;
         this.error = authState.authError;
+        if (this.error) {
+        this.showErrorAlert(this.error);
       }
-    )
+      }
+    );
   }
 
   onSubmit(form: NgForm) {

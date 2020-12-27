@@ -11,11 +11,12 @@ const initialstate: State = {
     user: null,
     authError: null,
     loading: false
-}
+};
 
-export function AuthReducer(state = initialstate, action: AuthAction.AuthAction){
-    console.log(state);
-    
+export function authReducer(
+	state = initialstate,
+	action: AuthAction.AuthAction
+) {
     switch (action.type) {
         case AuthAction.LOGIN:
             const user = new User(
@@ -33,8 +34,9 @@ export function AuthReducer(state = initialstate, action: AuthAction.AuthAction)
         case AuthAction.LOGIN_START:
             return{
                 ...state,
-                authError: null
-            }
+                authError: null,
+                loading: true
+            };
             
         case AuthAction.LOGOUT:
             return {
@@ -47,7 +49,7 @@ export function AuthReducer(state = initialstate, action: AuthAction.AuthAction)
                 user: null,
                 authError: action.payload,
                 loading: false
-            }    
+            };    
         default:
             return state;
     }
