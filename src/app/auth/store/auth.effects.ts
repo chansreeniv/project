@@ -41,7 +41,9 @@ const handleAuthentication = (
 const handleError = (errorRes: any) => {
   let errorMessage = 'An unknown error occurred!';
             if (!errorRes.error || !errorRes.error.error) {
+              console.log('error working');
               return of(new AuthActions.AuthenticateFail(errorMessage));
+              
             }
             switch (errorRes.error.error.message) {
               case 'EMAIL_EXISTS':
@@ -75,10 +77,10 @@ export class AuthEffects {
         this.authService.setLogoutTimer(+resData.expiresIn * 1000);
       }),
       map((resData) => {
-       return handleAuthentication(+resData.expiresIn,resData.email,resData.localId, resData.idToken)
+       return handleAuthentication(+resData.expiresIn,resData.email,resData.localId, resData.idToken);
       }),
       catchError(errorRes => {
-        return handleError(errorRes)
+        return handleError(errorRes);
       })
     );
   }));
@@ -104,7 +106,9 @@ export class AuthEffects {
            return handleAuthentication(+resData.expiresIn,resData.email,resData.localId, resData.idToken)
           }),
           catchError(errorRes => {
-            return handleError(errorRes)
+            console.log('catchError working');
+            
+            return handleError(errorRes);
           })
         );
     })
@@ -124,12 +128,13 @@ export class AuthEffects {
       this.authService.clearLogoutTimer();
       localStorage.removeItem('userData');
       this.router.navigate(['/auth']);
-    }));
+    })
+   );
 
-  @Effect({dispatch: false})
+  @Effect()
   autoLogin = this.actions$.pipe(
-    ofType( AuthActions.AUTO_LOGIN),
-    tap(() => { 
+    ofType(AuthActions.AUTO_LOGIN),
+    map(() => { 
       const userData: {
         email: string;
         id: string;
@@ -165,7 +170,8 @@ export class AuthEffects {
       // this.autoLogout(expirationDuration);
       }
       return { type: 'DUMMY' }
-    }));
+    })
+   );
 
   constructor(
     private actions$: Actions,

@@ -6,7 +6,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
-
 import { Subscription } from 'rxjs';
 import { AlertComponent } from '../shared/alert/alert.component';
 import { PlaceHolder } from '../shared/place.holder';
@@ -24,10 +23,11 @@ export class AuthComponent implements OnInit, OnDestroy {
   isLoginMode = true;
   isLoading = false;
   error: string = null;
+  @ViewChild(PlaceHolder, { static: false }) alertHost: PlaceHolder;
+
   private closeSub: Subscription;
   private storeSub: Subscription;
 
-  @ViewChild(PlaceHolder, { static: false }) alertHost: PlaceHolder;
 
   constructor(
     private componentFactoryResolver: ComponentFactoryResolver,
@@ -52,7 +52,6 @@ export class AuthComponent implements OnInit, OnDestroy {
     }
     const email = form.value.email;
     const password = form.value.password;
-    this.isLoading = true;
 
     if (this.isLoginMode) {
       // authObs = this.authService.login(email, password);
@@ -63,7 +62,7 @@ export class AuthComponent implements OnInit, OnDestroy {
         })
       );
     } else {
-    this.store.dispatch(new AuthActions.SignupStart({email: email, password: password}))
+    this.store.dispatch(new AuthActions.SignupStart({email: email, password: password}));
     }
 
     form.reset();
@@ -83,7 +82,9 @@ export class AuthComponent implements OnInit, OnDestroy {
     );
     const hostViewContainerRef = this.alertHost.viewContainerRef;
     hostViewContainerRef.clear();
+    
     const componentRef = hostViewContainerRef.createComponent(alertCmpFactory);
+    
     componentRef.instance.message = message;
     this.closeSub = componentRef.instance.close.subscribe(() => {
       this.closeSub.unsubscribe();
