@@ -21,7 +21,7 @@
     "@angular/router": "~10.2.1",
     "@ngrx/effects": "^10.1.1",
     "@ngrx/router-store": "^10.1.2",
-    "@ngrx/store": "^10.1.0",
+    "@ngrx/store": "^10.1.2",
     "@sentry/angular": "^5.29.0",
     "@sentry/tracing": "^5.29.0",
     "bootstrap": "^3.4.1",
