@@ -29,8 +29,6 @@
     "@ngrx/store": "^10.1.0",
     "@nguniversal/express-engine": "^10.1.0",
     "@nguniversal/module-map-ngfactory-loader": "^8.2.6",
-    "@sentry/angular": "^5.29.0",
-    "@sentry/tracing": "^5.29.0",
     "bootstrap": "^3.4.1",
     "express": "^4.15.2",
     "jQuery": "^1.7.4",
